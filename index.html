@@ -78,10 +78,6 @@
             padding-bottom: 10px;
         }
 
-        .info-box b {
-            color: #c0caf5;
-        }
-
         .group {
             margin-bottom: 20px;
         }
@@ -119,6 +115,13 @@
             margin-top: 5px;
         }
 
+        .url-input {
+            max-width: 100% !important;
+            box-sizing: border-box;
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+
         .buttons {
             display: flex;
             flex-direction: column;
@@ -135,23 +138,13 @@
             font-size: 1em;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
-        button:hover {
-            background-color: var(--btn-hover);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
+        button:hover { background-color: var(--btn-hover); }
+        button:active { transform: scale(0.98); }
 
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column-reverse;
-            }
+            .container { flex-direction: column-reverse; }
         }
     </style>
 </head>
@@ -175,37 +168,40 @@
             </div>
 
             <div class="group">
+                <h3>Собственные утилиты</h3>
+                <label><input type="checkbox" id="installWinUtil" checked> Скачать утилиту WinScalpel и добавить ярлык на Рабочий стол</label>
+                <div style="margin-left: 26px; color: #565f89; font-size: 0.85em; margin-bottom: 5px;">Ссылка на raw-скрипт (.ps1):</div>
+                <input type="text" id="utilUrl" class="url-input" value="https://raw.githubusercontent.com/anc/WinScalpel/main/winutil.ps1" style="margin-left: 26px; width: calc(100% - 26px);">
+            </div>
+
+            <div class="group">
                 <h3>Приватность и Мусор</h3>
                 <label><input type="checkbox" id="disableBloat" checked> Запретить автоустановку мусора (TikTok, Instagram)</label>
                 <label><input type="checkbox" id="disableTelemetry" checked> Отключить телеметрию</label>
-                <label><input type="checkbox" id="disableCopilot" checked> Отключить Copilot и поиск в сети в меню Пуск</label>
+                <label><input type="checkbox" id="disableCopilot" checked> Отключить Copilot и поиск в сети в Пуске</label>
             </div>
 
             <div class="group">
-                <h3>Производительность (Гейминг)</h3>
+                <h3>Производительность</h3>
                 <label><input type="checkbox" id="disableVBS" checked> Отключить VBS / Изоляцию ядра (FPS Буст)</label>
                 <label><input type="checkbox" id="ultimatePower" checked> Включить схему "Максимальная производительность"</label>
-                <label><input type="checkbox" id="disableUAC" checked> Полностью отключить UAC (Контроль учетных записей)</label>
-                <label><input type="checkbox" id="disableSticky" checked> Отключить залипание клавиш (Shift)</label>
+                <label><input type="checkbox" id="disableUAC" checked> Отключить UAC (Контроль учетных записей)</label>
             </div>
 
             <div class="group">
-                <h3>Интерфейс и Удобство</h3>
-                <label><input type="checkbox" id="classicContextMenu" checked> Вернуть классическое контекстное меню</label>
-                <label><input type="checkbox" id="darkTheme" checked> Включить темную тему по умолчанию</label>
-                <label><input type="checkbox" id="explorerTweaks" checked> Проводник: показывать расширения и скрытые файлы</label>
-                <label><input type="checkbox" id="hideTaskbarIcons" checked> Скрыть кнопки Чата и Copilot на панели задач</label>
-                <label><input type="checkbox" id="noLockScreen" checked> Отключить экран блокировки</label>
+                <h3>Интерфейс</h3>
+                <label><input type="checkbox" id="classicContextMenu" checked> Классическое контекстное меню</label>
+                <label><input type="checkbox" id="darkTheme" checked> Темная тема системы</label>
+                <label><input type="checkbox" id="explorerTweaks" checked> Проводник: показ расширений и скрытых файлов</label>
             </div>
         </div>
 
         <div class="output-panel">
             <div class="info-box">
-                <h2>Зачем нужен этот инструмент?</h2>
-                <p>Современные сборки Windows 11 (25H2 и выше) перегружены телеметрией, ИИ-функциями и рекламными сервисами. Попытка удалить их старыми методами (через удаление файлов или служб Защитника) часто приводит к синим экранам, поломке Центра обновлений и конфликтам с античитами в играх.</p>
-                <p><b>WinZen</b> работает иначе. Он создает безопасный файл ответов, который настраивает систему хирургически точно — через официальные ключи реестра <i>прямо на этапе установки</i>.</p>
-                <p><b>Результат:</b> Вы получаете абсолютно чистую, быструю и стабильную систему с вырезанным мусором, максимальным FPS и готовыми твиками для удобной работы.</p>
-                <p><b>Как использовать:</b> Выберите нужные галочки, нажмите «Скачать» и скопируйте полученный файл <code>autounattend.xml</code> в корень вашей установочной флешки с Windows.</p>
+                <h2>WinZen Integration</h2>
+                <p>Теперь вы можете не только настроить систему ключами реестра, но и автоматически развернуть свою собственную утилиту пост-установки.</p>
+                <p><b>Как это работает:</b> При первом входе в систему (когда появляется рабочий стол и подключается интернет), Windows скачает ваш PowerShell скрипт по указанной ссылке, сохранит его в скрытую директорию и создаст красивый ярлык <b>«WinScalpel Util»</b> прямо на рабочем столе.</p>
+                <p>Просто кликните по ярлыку после установки, чтобы в один клик поставить браузеры, архиваторы и другой софт!</p>
             </div>
             
             <div class="buttons">
@@ -216,21 +212,15 @@
     </div>
 
     <script>
-        // Функция сборки XML перенесена "под капот"
         function getGeneratedXML() {
             const username = document.getElementById('username').value || 'User';
-            
-            let peOrder = 1;
-            let hklmOrder = 1;
-            let hkcuOrder = 1;
+            let peOrder = 1; let hklmOrder = 1; let hkcuOrder = 1;
 
             function addPE(cmd) { return `<RunSynchronousCommand wcm:action="add"><Order>${peOrder++}</Order><Path>${cmd}</Path></RunSynchronousCommand>\n                `; }
             function addHKLM(cmd) { return `<RunSynchronousCommand wcm:action="add"><Order>${hklmOrder++}</Order><Path>${cmd}</Path></RunSynchronousCommand>\n                `; }
             function addHKCU(cmd) { return `<SynchronousCommand wcm:action="add"><Order>${hkcuOrder++}</Order><CommandLine>${cmd}</CommandLine></SynchronousCommand>\n                `; }
 
-            let peCommands = '';
-            let hklmCommands = '';
-            let hkcuCommands = '';
+            let peCommands = ''; let hklmCommands = ''; let hkcuCommands = '';
 
             if (document.getElementById('bypassReq').checked) {
                 peCommands += addPE('reg add HKLM\\SYSTEM\\Setup\\LabConfig /v BypassTPMCheck /t REG_DWORD /d 1 /f');
@@ -244,30 +234,15 @@
                 hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f');
                 hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f');
             }
-            if (document.getElementById('disableVBS').checked) {
-                hklmCommands += addHKLM('reg add HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard /v EnableVirtualizationBasedSecurity /t REG_DWORD /d 0 /f');
-            }
-            if (document.getElementById('disableTelemetry').checked) {
-                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection /v AllowTelemetry /t REG_DWORD /d 0 /f');
-            }
+            if (document.getElementById('disableVBS').checked) hklmCommands += addHKLM('reg add HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard /v EnableVirtualizationBasedSecurity /t REG_DWORD /d 0 /f');
+            if (document.getElementById('disableTelemetry').checked) hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection /v AllowTelemetry /t REG_DWORD /d 0 /f');
             if (document.getElementById('disableUAC').checked) {
                 hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f');
                 hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 0 /f');
             }
-            if (document.getElementById('noLockScreen').checked) {
-                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization /v NoLockScreen /t REG_DWORD /d 1 /f');
-            }
 
-            if (document.getElementById('ultimatePower').checked) {
-                hkcuCommands += addHKCU('powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c');
-            }
-            if (document.getElementById('classicContextMenu').checked) {
-                hkcuCommands += addHKCU('cmd.exe /c reg add "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32" /f /ve');
-            }
-            if (document.getElementById('hideTaskbarIcons').checked) {
-                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced /v ShowCopilotButton /t REG_DWORD /d 0 /f');
-                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced /v TaskbarMn /t REG_DWORD /d 0 /f');
-            }
+            if (document.getElementById('ultimatePower').checked) hkcuCommands += addHKCU('powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c');
+            if (document.getElementById('classicContextMenu').checked) hkcuCommands += addHKCU('cmd.exe /c reg add "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32" /f /ve');
             if (document.getElementById('disableCopilot').checked) {
                 hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f');
                 hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f');
@@ -281,13 +256,15 @@
                 hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize /v AppsUseLightTheme /t REG_DWORD /d 0 /f');
                 hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize /v SystemUsesLightTheme /t REG_DWORD /d 0 /f');
             }
-            if (document.getElementById('disableSticky').checked) {
-                hkcuCommands += addHKCU('cmd.exe /c reg add "HKCU\\Control Panel\\Accessibility\\StickyKeys" /v Flags /t REG_SZ /d 506 /f');
+
+            // Магия загрузки скрипта и создания ярлыка
+            if (document.getElementById('installWinUtil').checked) {
+                const url = document.getElementById('utilUrl').value;
+                const psCommand = `powershell.exe -NoProfile -WindowStyle Hidden -Command "Invoke-WebRequest -Uri '${url}' -OutFile 'C:\\Windows\\WinScalpel.ps1' -UseBasicParsing; $s=(New-Object -COM WScript.Shell).CreateShortcut('C:\\Users\\Public\\Desktop\\WinScalpel Util.lnk'); $s.TargetPath='powershell.exe'; $s.Arguments='-ExecutionPolicy Bypass -WindowStyle Hidden -File C:\\Windows\\WinScalpel.ps1'; $s.IconLocation='imageres.dll,109'; $s.Save()"`;
+                hkcuCommands += addHKCU(psCommand);
             }
 
-            if (hkcuCommands !== '') {
-                hkcuCommands += addHKCU('cmd.exe /c taskkill /f /im explorer.exe &amp; start explorer.exe');
-            }
+            if (hkcuCommands !== '') hkcuCommands += addHKCU('cmd.exe /c taskkill /f /im explorer.exe &amp; start explorer.exe');
 
             return `<?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
