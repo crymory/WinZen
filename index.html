@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Win 11 25H2 Autounattend Generator</title>
+    <style>
+        :root {
+            --bg-color: #1a1b26;
+            --panel-bg: #24283b;
+            --text-main: #a9b1d6;
+            --text-accent: #7aa2f7;
+            --border-color: #414868;
+            --btn-bg: #7aa2f7;
+            --btn-text: #1a1b26;
+            --btn-hover: #8caaee;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--text-accent);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+            font-size: 0.9em;
+            color: #565f89;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .controls {
+            flex: 1;
+            background-color: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .output-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .group {
+            margin-bottom: 20px;
+        }
+
+        .group h3 {
+            margin-top: 0;
+            color: var(--text-accent);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: var(--text-accent);
+            width: 16px;
+            height: 16px;
+        }
+
+        input[type="text"] {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 250px;
+            margin-top: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            flex-grow: 1;
+            background-color: #16161e;
+            color: #c0caf5;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85em;
+            resize: none;
+            white-space: pre;
+            overflow-wrap: normal;
+            overflow-x: scroll;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--btn-hover);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            textarea {
+                min-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Windows 11 Unattend Generator</h1>
+    <div class="subtitle">Легковесный генератор autounattend.xml для сборок 25H2+</div>
+
+    <div class="container">
+        <div class="controls">
+            <div class="group">
+                <h3>Учетная запись</h3>
+                <label>Имя пользователя:
+                    <input type="text" id="username" value="anc" style="margin-left: 10px;">
+                </label>
+            </div>
+
+            <div class="group">
+                <h3>Установка (Windows PE)</h3>
+                <label><input type="checkbox" id="bypassReq" checked> Обход требований (TPM, RAM, CPU, SecureBoot)</label>
+            </div>
+
+            <div class="group">
+                <h3>Приватность и Мусор</h3>
+                <label><input type="checkbox" id="disableBloat" checked> Запретить автоустановку мусора (TikTok, Instagram)</label>
+                <label><input type="checkbox" id="disableTelemetry" checked> Отключить телеметрию</label>
+                <label><input type="checkbox" id="disableCopilot" checked> Отключить Copilot и поиск в сети в меню Пуск</label>
+            </div>
+
+            <div class="group">
+                <h3>Производительность (Гейминг)</h3>
+                <label><input type="checkbox" id="disableVBS" checked> Отключить VBS / Изоляцию ядра (FPS Буст)</label>
+                <label><input type="checkbox" id="ultimatePower" checked> Включить схему "Максимальная производительность"</label>
+                <label><input type="checkbox" id="disableUAC" checked> Полностью отключить UAC (Контроль учетных записей)</label>
+                <label><input type="checkbox" id="disableSticky" checked> Отключить залипание клавиш (Shift)</label>
+            </div>
+
+            <div class="group">
+                <h3>Интерфейс и Удобство</h3>
+                <label><input type="checkbox" id="classicContextMenu" checked> Вернуть классическое контекстное меню</label>
+                <label><input type="checkbox" id="darkTheme" checked> Включить темную тему по умолчанию</label>
+                <label><input type="checkbox" id="explorerTweaks" checked> Проводник: показывать расширения и скрытые файлы</label>
+                <label><input type="checkbox" id="hideTaskbarIcons" checked> Скрыть кнопки Чата и Copilot на панели задач</label>
+                <label><input type="checkbox" id="noLockScreen" checked> Отключить экран блокировки</label>
+            </div>
+        </div>
+
+        <div class="output-panel">
+            <textarea id="xmlOutput" readonly></textarea>
+            <div class="buttons">
+                <button onclick="generateXML()">Сгенерировать XML</button>
+                <button onclick="copyToClipboard()">Копировать</button>
+                <button onclick="downloadXML()">Скачать .xml</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateXML() {
+            const username = document.getElementById('username').value || 'User';
+            
+            // Вспомогательные функции для авто-инкремента тега <Order>
+            let peOrder = 1;
+            let hklmOrder = 1;
+            let hkcuOrder = 1;
+
+            function addPE(cmd) { return `<RunSynchronousCommand wcm:action="add"><Order>${peOrder++}</Order><Path>${cmd}</Path></RunSynchronousCommand>\n                `; }
+            function addHKLM(cmd) { return `<RunSynchronousCommand wcm:action="add"><Order>${hklmOrder++}</Order><Path>${cmd}</Path></RunSynchronousCommand>\n                `; }
+            function addHKCU(cmd) { return `<SynchronousCommand wcm:action="add"><Order>${hkcuOrder++}</Order><CommandLine>${cmd}</CommandLine></SynchronousCommand>\n                `; }
+
+            let peCommands = '';
+            let hklmCommands = '';
+            let hkcuCommands = '';
+
+            // --- БЛОК 1: Обход требований (PE) ---
+            if (document.getElementById('bypassReq').checked) {
+                peCommands += addPE('reg add HKLM\\SYSTEM\\Setup\\LabConfig /v BypassTPMCheck /t REG_DWORD /d 1 /f');
+                peCommands += addPE('reg add HKLM\\SYSTEM\\Setup\\LabConfig /v BypassSecureBootCheck /t REG_DWORD /d 1 /f');
+                peCommands += addPE('reg add HKLM\\SYSTEM\\Setup\\LabConfig /v BypassRAMCheck /t REG_DWORD /d 1 /f');
+                peCommands += addPE('reg add HKLM\\SYSTEM\\Setup\\LabConfig /v BypassCPUCheck /t REG_DWORD /d 1 /f');
+            }
+
+            // --- БЛОК 2: Приватность, Мусор и Система (HKLM) ---
+            if (document.getElementById('disableBloat').checked) {
+                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f');
+                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f');
+                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f');
+            }
+            if (document.getElementById('disableVBS').checked) {
+                hklmCommands += addHKLM('reg add HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard /v EnableVirtualizationBasedSecurity /t REG_DWORD /d 0 /f');
+            }
+            if (document.getElementById('disableTelemetry').checked) {
+                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection /v AllowTelemetry /t REG_DWORD /d 0 /f');
+            }
+            if (document.getElementById('disableUAC').checked) {
+                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f');
+                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 0 /f');
+            }
+            if (document.getElementById('noLockScreen').checked) {
+                hklmCommands += addHKLM('reg add HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization /v NoLockScreen /t REG_DWORD /d 1 /f');
+            }
+
+            // --- БЛОК 3: Интерфейс и настройки пользователя (HKCU / OOBE) ---
+            if (document.getElementById('ultimatePower').checked) {
+                hkcuCommands += addHKCU('powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c');
+            }
+            if (document.getElementById('classicContextMenu').checked) {
+                hkcuCommands += addHKCU('cmd.exe /c reg add "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32" /f /ve');
+            }
+            if (document.getElementById('hideTaskbarIcons').checked) {
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced /v ShowCopilotButton /t REG_DWORD /d 0 /f');
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced /v TaskbarMn /t REG_DWORD /d 0 /f');
+            }
+            if (document.getElementById('disableCopilot').checked) {
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f');
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f');
+            }
+            if (document.getElementById('explorerTweaks').checked) {
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced /v HideFileExt /t REG_DWORD /d 0 /f');
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced /v Hidden /t REG_DWORD /d 1 /f');
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced /v LaunchTo /t REG_DWORD /d 1 /f');
+            }
+            if (document.getElementById('darkTheme').checked) {
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize /v AppsUseLightTheme /t REG_DWORD /d 0 /f');
+                hkcuCommands += addHKCU('cmd.exe /c reg add HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize /v SystemUsesLightTheme /t REG_DWORD /d 0 /f');
+            }
+            if (document.getElementById('disableSticky').checked) {
+                hkcuCommands += addHKCU('cmd.exe /c reg add "HKCU\\Control Panel\\Accessibility\\StickyKeys" /v Flags /t REG_SZ /d 506 /f');
+            }
+
+            // Добавляем обязательный перезапуск проводника в конце, если были визуальные твики
+            if (hkcuCommands !== '') {
+                hkcuCommands += addHKCU('cmd.exe /c taskkill /f /im explorer.exe &amp; start explorer.exe');
+            }
+
+            // Формируем финальный XML
+            const xmlTemplate = `<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+    <settings pass="windowsPE">
+        <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <SetupUILanguage><UILanguage>ru-RU</UILanguage></SetupUILanguage>
+            <InputLocale>0419:00000419;0409:00000409</InputLocale>
+            <SystemLocale>ru-RU</SystemLocale>
+            <UILanguage>ru-RU</UILanguage>
+            <UserLocale>ru-RU</UserLocale>
+        </component>
+        <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <UserData><AcceptEula>true</AcceptEula></UserData>
+            ${peCommands ? `<RunSynchronous>\n                ${peCommands.trim()}\n            </RunSynchronous>` : ''}
+        </component>
+    </settings>
+
+    <settings pass="specialize">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <ComputerName>DESKTOP-PC</ComputerName>
+            <TimeZone>FLE Standard Time</TimeZone>
+        </component>
+        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            ${hklmCommands ? `<RunSynchronous>\n                ${hklmCommands.trim()}\n            </RunSynchronous>` : ''}
+        </component>
+    </settings>
+
+    <settings pass="oobeSystem">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <HideOEMRegistrationPage>true</HideOEMRegistrationPage>
+                <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+                <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+                <ProtectYourPC>3</ProtectYourPC>
+            </OOBE>
+            <UserAccounts>
+                <LocalAccounts>
+                    <LocalAccount wcm:action="add">
+                        <Password><Value></Value><PlainText>true</PlainText></Password>
+                        <Description>Local Admin</Description>
+                        <DisplayName>${username}</DisplayName>
+                        <Group>Administrators</Group>
+                        <Name>${username}</Name>
+                    </LocalAccount>
+                </LocalAccounts>
+            </UserAccounts>
+            ${hkcuCommands ? `<FirstLogonCommands>\n                ${hkcuCommands.trim()}\n            </FirstLogonCommands>` : ''}
+        </component>
+    </settings>
+</unattend>`;
+
+            document.getElementById('xmlOutput').value = xmlTemplate;
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('xmlOutput');
+            output.select();
+            document.execCommand('copy');
+            alert('XML скопирован в буфер обмена!');
+        }
+
+        function downloadXML() {
+            const text = document.getElementById('xmlOutput').value;
+            if (!text) {
+                alert('Сначала сгенерируйте XML!');
+                return;
+            }
+            const blob = new Blob([text], { type: 'text/xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'autounattend.xml';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Генерируем базовый конфиг при загрузке страницы
+        window.onload = generateXML;
+    </script>
+</body>
+</html>
